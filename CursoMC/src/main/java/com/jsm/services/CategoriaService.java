@@ -1,6 +1,7 @@
 package com.jsm.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.jsm.domain.Categoria;
 import com.jsm.repositories.CategoriaRepository;
+import com.jsm.services.exception.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -17,7 +19,13 @@ public class CategoriaService {
 	CategoriaRepository rep;
 
 	public Categoria get(Long id) {
-		return rep.getOne(id);
+		Optional<Categoria>  cat = rep.findById(id);
+		if(!cat.isPresent()) {
+			throw new ObjectNotFoundException("Objeto não encontrado! "
+					+ "ID: "+id+" | Tipo: "+ Categoria.class.getName());
+			
+		}
+		return cat.get();
 	}
 
 	public List<Categoria> get() {
