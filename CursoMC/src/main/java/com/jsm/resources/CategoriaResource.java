@@ -1,6 +1,8 @@
 package com.jsm.resources;
 
+import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -17,8 +19,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jsm.domain.Categoria;
+import com.jsm.dto.CategoriaDTO;
 import com.jsm.services.CategoriaService;
 
 @RestController
@@ -36,9 +40,10 @@ public class CategoriaResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Categoria>> get() {
-		List<Categoria> cats = service.get();
-		return ResponseEntity.ok(cats);
+	public ResponseEntity<List<CategoriaDTO>> get() {
+		List<Categoria> cats = service.get();		
+		List<CategoriaDTO> listDTO = cats.stream().map(dto -> new CategoriaDTO(dto)).collect(Collectors.toList());
+		return ResponseEntity.ok(listDTO);
 	}
 
 	@GetMapping("/p")
@@ -50,7 +55,9 @@ public class CategoriaResource {
 	@PostMapping
 	public ResponseEntity<Categoria> post(@Valid @RequestBody Categoria categoria) {
 		categoria = service.post(categoria);
-		return ResponseEntity.ok(categoria);
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(categoria.getId()).toUri();
+		
+		return ResponseEntity.created(uri).body(categoria);
 	}
 
 	@PutMapping("/{id}")

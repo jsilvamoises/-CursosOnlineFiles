@@ -50,6 +50,7 @@ public class ClienteService {
 	}
 	
 	public void delete(Long id) {
+		get(id);
 		rep.deleteById(id);
 	}
 }

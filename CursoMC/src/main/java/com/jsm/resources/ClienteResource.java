@@ -1,5 +1,6 @@
 package com.jsm.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jsm.domain.Cliente;
 import com.jsm.services.ClienteService;
@@ -50,7 +52,9 @@ public class ClienteResource {
 	@PostMapping
 	public ResponseEntity<Cliente> post(@Valid @RequestBody Cliente cliente) {
 		cliente = service.post(cliente);
-		return ResponseEntity.ok(cliente);
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(cliente.getId()).toUri();
+		
+		return ResponseEntity.created(uri).body(cliente);
 	}
 
 	@PutMapping("/{id}")

@@ -49,6 +49,7 @@ public class PedidoService {
 	}
 	
 	public void delete(Long id) {
+		get(id);
 		rep.deleteById(id);
 	}
 }
