@@ -2,6 +2,7 @@ package com.jsm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,11 +14,18 @@ import com.jsm.domain.Cidade;
 import com.jsm.domain.Cliente;
 import com.jsm.domain.Endereco;
 import com.jsm.domain.Estado;
+import com.jsm.domain.PagamentComCartao;
+import com.jsm.domain.Pagamento;
+import com.jsm.domain.PagamentoComBoleto;
+import com.jsm.domain.Pedido;
 import com.jsm.domain.Produto;
+import com.jsm.domain.enums.EstadoPagamento;
 import com.jsm.domain.enums.TipoCliente;
 import com.jsm.repositories.ClienteRepository;
 import com.jsm.repositories.EnderecoRepository;
 import com.jsm.repositories.EstadoRepository;
+import com.jsm.repositories.PagamentoRepository;
+import com.jsm.repositories.PedidoRepository;
 import com.jsm.repositories.ProdutoRepository;
 import com.jsm.services.CategoriaService;
 
@@ -38,6 +46,12 @@ public class CursoMcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private EnderecoRepository repEndereco;
+	
+	@Autowired
+	private PedidoRepository pedRepository;
+	
+	@Autowired
+	private PagamentoRepository pagRepository;
 	
 	
 	public static void main(String[] args) {
@@ -94,6 +108,22 @@ public class CursoMcApplication implements CommandLineRunner {
 		repEndereco.save(residencial);
 		repEndereco.save(comercial);
 		
+		
+		Pedido ped1 = new Pedido(new Date(),  mariaSilva, residencial);
+		Pedido ped2 = new Pedido(new Date(),  mariaSilva, comercial);
+		
+		Pagamento pgt1 = new PagamentComCartao(null, EstadoPagamento.QUITADO, ped1, 3);
+		ped1.setPagamento(pgt1);
+		
+		Pagamento pgt2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, new Date(), null);
+		ped2.setPagamento(pgt2);
+		
+		mariaSilva.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		
+		pedRepository.saveAll(Arrays.asList(ped1,ped2));
+	    
+		pagRepository.saveAll(Arrays.asList(pgt1,pgt2));
 		
 	}
 	
