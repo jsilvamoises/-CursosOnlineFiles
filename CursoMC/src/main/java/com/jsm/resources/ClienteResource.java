@@ -2,6 +2,7 @@ package com.jsm.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jsm.domain.Cliente;
+import com.jsm.dto.ClienteDTO;
+import com.jsm.dto.ClienteNewDTO;
 import com.jsm.services.ClienteService;
 
 @RestController
@@ -38,9 +41,10 @@ public class ClienteResource {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Cliente>> get() {
-		List<Cliente> cats = service.get();
-		return ResponseEntity.ok(cats);
+	public ResponseEntity<List<ClienteDTO>> get() {
+		List<Cliente> listObj = service.get();
+		List<ClienteDTO> listDTO = listObj.stream().map(dto -> new ClienteDTO(dto)).collect(Collectors.toList());
+		return ResponseEntity.ok(listDTO);
 	}
 
 	@GetMapping("/p")
@@ -49,22 +53,27 @@ public class ClienteResource {
 		return ResponseEntity.ok(page);
 	}
 
+	
+
 	@PostMapping
-	public ResponseEntity<Cliente> post(@Valid @RequestBody Cliente cliente) {
-		cliente = service.post(cliente);
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(cliente.getId()).toUri();
-		
-		return ResponseEntity.created(uri).body(cliente);
+	public ResponseEntity<Void> post(@Valid @RequestBody ClienteNewDTO dto) {
+		Cliente obj = service.fromDTO(dto);
+
+		service.post(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(obj.getId())
+				.toUri();
+
+		return ResponseEntity.created(uri).build();
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Cliente> put(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {
-		cliente = service.put(id, cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<ClienteDTO> put(@PathVariable Long id, @Valid @RequestBody ClienteDTO dto) {
+		Cliente obj = service.put(id, service.fromDTO(dto));
+		return ResponseEntity.ok(new ClienteDTO(obj));
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable Long id){
+	public ResponseEntity<String> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Deleted!!!");
 	}

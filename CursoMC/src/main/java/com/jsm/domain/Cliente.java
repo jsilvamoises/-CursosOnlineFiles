@@ -6,18 +6,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jsm.domain.enums.TipoCliente;
 
 @Entity
+@Table(
+		name="cliente",
+		uniqueConstraints= {@UniqueConstraint(columnNames= {"email","cpf_cnpj"})})
 public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,13 +32,18 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name="email",unique=true)
 	private String email;
+	
 	private String nome;
+	
+	@Column(name="cpf_cnpj",unique=true)
 	private String cpfCnpj;
+	
 	private Integer tipo;
 
 	
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "cliente",cascade= {CascadeType.ALL})
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection

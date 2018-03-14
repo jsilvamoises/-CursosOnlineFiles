@@ -42,8 +42,8 @@ public class CategoriaResource {
 
 	@GetMapping
 	public ResponseEntity<List<CategoriaDTO>> get() {
-		List<Categoria> cats = service.get();
-		List<CategoriaDTO> listDTO = cats.stream().map(dto -> new CategoriaDTO(dto)).collect(Collectors.toList());
+		List<Categoria> listObj = service.get();
+		List<CategoriaDTO> listDTO = listObj.stream().map(dto -> new CategoriaDTO(dto)).collect(Collectors.toList());
 		return ResponseEntity.ok(listDTO);
 	}
 
@@ -78,19 +78,19 @@ public class CategoriaResource {
 
 	@PostMapping
 	public ResponseEntity<CategoriaDTO> post(@Valid @RequestBody CategoriaDTO dto) {
-		Categoria categoria = service.fromDTO(dto);
+		Categoria obj = service.fromDTO(dto);
 
-		service.post(categoria);
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(categoria.getId())
+		service.post(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(obj.getId())
 				.toUri();
 
-		return ResponseEntity.created(uri).body(new CategoriaDTO(categoria));
+		return ResponseEntity.created(uri).body(new CategoriaDTO(obj));
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<CategoriaDTO> put(@PathVariable Long id, @Valid @RequestBody CategoriaDTO dto) {
-		Categoria categoria = service.put(id, service.fromDTO(dto));
-		return ResponseEntity.ok(new CategoriaDTO(categoria));
+		Categoria obj = service.put(id, service.fromDTO(dto));
+		return ResponseEntity.ok(new CategoriaDTO(obj));
 	}
 
 	@DeleteMapping("/{id}")
