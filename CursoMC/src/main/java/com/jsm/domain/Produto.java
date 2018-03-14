@@ -3,7 +3,9 @@ package com.jsm.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -36,9 +40,43 @@ public class Produto implements Serializable {
 			)
 	private List<Categoria> categorias = new ArrayList<>();
 
+	
+	@OneToMany(mappedBy="id.produto")
+	private Set<ItemPedido> itens  = new HashSet<>();
+
+	
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
+
 	public Produto() {
 		super();
 
+	}
+	
+	
+
+	public Produto(Long id, String nome, BigDecimal preco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.preco = preco;
+	}
+	
+	
+	@Transient
+	public List<Pedido> getPedidos(){
+		// TODO: Verificar se está correto
+		List<Pedido> lista  = new ArrayList<Pedido>();
+		for(ItemPedido ip:itens) {
+			lista.add(ip.getPedido());
+		}
+		
+		return lista;
 	}
 
 	public Long getId() {
