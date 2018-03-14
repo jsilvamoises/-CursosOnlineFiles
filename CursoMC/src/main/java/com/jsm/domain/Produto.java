@@ -18,7 +18,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -31,7 +30,7 @@ public class Produto implements Serializable {
 	private String nome;
 	private BigDecimal preco;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToMany(cascade= {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
 	@JoinTable(
 			name="produto_categoria",
@@ -69,7 +68,7 @@ public class Produto implements Serializable {
 	}
 	
 	@JsonIgnore
-	@Transient
+	//@Transient
 	public List<Pedido> getPedidos(){
 		// TODO: Verificar se está correto
 		List<Pedido> lista  = new ArrayList<Pedido>();
