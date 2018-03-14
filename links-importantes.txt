@@ -1,0 +1,2 @@
+Bean Validation Oracle: https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
+Hibernate Validator: https://docs.jboss.org/hibernate/validator/5.0/reference/en-US/html/chapter-bean-constraints.html#section-declaring-bean-constraints

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.jsm.domain.Categoria;
+import com.jsm.dto.CategoriaDTO;
 import com.jsm.repositories.CategoriaRepository;
 import com.jsm.services.exception.ObjectNotFoundException;
 
@@ -60,5 +61,15 @@ public class CategoriaService {
 		direction = direction.toUpperCase();
 		PageRequest pageRequest = new PageRequest(pageNumber, totalLines, Direction.valueOf(direction), orderBy);
 		return rep.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO dto) {
+		Categoria c = new Categoria();
+		c.setNome(dto.getNome());
+		return c;
+	}
+	public CategoriaDTO toDTO(Categoria categoria) {
+		CategoriaDTO  dto = new CategoriaDTO(categoria);
+		return dto;
 	}
 }

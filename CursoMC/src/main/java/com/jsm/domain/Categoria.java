@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 
@@ -19,11 +22,11 @@ public class Categoria implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+
 	private String nome;
-	
-	
-	@ManyToMany(mappedBy="categorias",
-			targetEntity=Produto.class)	
+
+	@ManyToMany(mappedBy = "categorias", targetEntity = Produto.class)
 	private List<Produto> produtos = new ArrayList<>();
 
 	public Categoria() {
@@ -51,8 +54,6 @@ public class Categoria implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	
 
 	public List<Produto> getProdutos() {
 		return produtos;
