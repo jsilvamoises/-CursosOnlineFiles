@@ -6,11 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.jsm.domain.enums.TipoCliente;
 
 @Entity
@@ -26,8 +30,12 @@ public class Cliente implements Serializable {
 	private String cpfCnpj;
 	private Integer tipo;
 
+	@JsonManagedReference
+	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 
+	@ElementCollection
+	@CollectionTable(name="telefone")
 	private Set<String> telefones = new HashSet<>();
 
 	public Cliente(Long id, String email, String nome, String cpfCnpj, TipoCliente tipo) {
@@ -96,6 +104,7 @@ public class Cliente implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+		
 	}
 
 	@Override

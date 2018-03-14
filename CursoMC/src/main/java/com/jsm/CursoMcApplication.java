@@ -10,8 +10,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jsm.domain.Categoria;
 import com.jsm.domain.Cidade;
+import com.jsm.domain.Cliente;
+import com.jsm.domain.Endereco;
 import com.jsm.domain.Estado;
 import com.jsm.domain.Produto;
+import com.jsm.domain.enums.TipoCliente;
+import com.jsm.repositories.ClienteRepository;
+import com.jsm.repositories.EnderecoRepository;
 import com.jsm.repositories.EstadoRepository;
 import com.jsm.repositories.ProdutoRepository;
 import com.jsm.services.CategoriaService;
@@ -27,6 +32,12 @@ public class CursoMcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private EstadoRepository estadoRep;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository repEndereco;
 	
 	
 	public static void main(String[] args) {
@@ -54,8 +65,8 @@ public class CursoMcApplication implements CommandLineRunner {
 		
 		
 	
-	   p1.getCategorias().addAll(Arrays.asList(c1,c2));
-	   p3.getCategorias().addAll(Arrays.asList(c3));
+	    p1.getCategorias().addAll(Arrays.asList(c1,c2));
+	    p3.getCategorias().addAll(Arrays.asList(c3));
 	   
 		Arrays.asList(p1,p2,p3).iterator().forEachRemaining(p-> prodService.save(p) );
 	
@@ -70,6 +81,20 @@ public class CursoMcApplication implements CommandLineRunner {
 		sp.getCidades().addAll(Arrays.asList(saoPaulo,campinas));
 		
 		estadoRep.saveAll(Arrays.asList(mg,sp));
+		
+		Cliente mariaSilva = new Cliente(null, "maria@gmail.com", "Maria Silva", "365.256.258-00", TipoCliente.PESSOA_FISICA);
+		mariaSilva.getTelefones().addAll(Arrays.asList("(11) 9.5898-9685","(11) 5869-9857"));
+		Endereco residencial = new Endereco(null, "Rua Samanbaia", "800", "APT 22", "São Tiago", "56.695-695", saoPaulo, mariaSilva);
+		Endereco comercial = new Endereco(null, "Rua Guaiba", "600", "Proximo ao mercado tor", "São Benedito", "36.652-987", campinas, mariaSilva);
+		
+		residencial.setCliente(mariaSilva);
+		comercial.setCliente(mariaSilva);
+		clienteRepository.save(mariaSilva);
+		
+		repEndereco.save(residencial);
+		repEndereco.save(comercial);
+		
+		
 	}
 	
 	 
