@@ -6,6 +6,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class ItemPedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+    @JsonIgnore
     @EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 	
@@ -60,17 +61,15 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 	
-	@Transient
-	@JsonIgnore
-	public Produto getProduto() {
-		// TODO: Verificar se esta certo
+	//@Transient
+	//@JsonIgnore
+	public Produto getProduto() {		
 		return this.id.getProduto();
 	}
 	
 	@JsonIgnore
 	@Transient
-	public Pedido getPedido() {
-		// TODO: Verificar se esta certo
+	public Pedido getPedido() {		
 		return this.getPedido();
 	}
 	
