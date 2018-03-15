@@ -52,8 +52,14 @@ public class ClienteService {
 	}
 
 	public Cliente put(Long id, Cliente entity) {
+		System.out.println("ID: >>"+id);
 		Cliente savedEntity = get(id);
-		BeanUtils.copyProperties(entity, savedEntity, "id");
+		System.out.println(entity);
+		System.out.println(savedEntity);		
+		
+		BeanUtils.copyProperties(entity, savedEntity,"id");
+		System.out.println(entity);
+		System.out.println(savedEntity);
 		entity = rep.save(savedEntity);
 		return entity;
 	}

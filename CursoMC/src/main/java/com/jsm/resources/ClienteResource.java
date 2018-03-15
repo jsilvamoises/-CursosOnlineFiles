@@ -68,7 +68,10 @@ public class ClienteResource {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ClienteDTO> put(@PathVariable Long id, @Valid @RequestBody ClienteDTO dto) {
+		
+		System.out.println(id +" - "+dto);
 		Cliente obj = service.put(id, service.fromDTO(dto));
+		
 		return ResponseEntity.ok(new ClienteDTO(obj));
 	}
 

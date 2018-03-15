@@ -2,17 +2,25 @@ package com.jsm.services.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.jsm.domain.Cliente;
 import com.jsm.domain.enums.TipoCliente;
 import com.jsm.dto.ClienteNewDTO;
 import com.jsm.error.FieldMessage;
+import com.jsm.repositories.ClienteRepository;
 import com.jsm.services.validation.utils.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 
+	@Autowired
+	private ClienteRepository repo;
+	
 	@Override
 	public void initialize(ClienteInsert ann) {
 	}
@@ -36,6 +44,11 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		}else {
 			//throw new RuntimeException("Tipo de Pessoa Inválido!");
 			list.add(new FieldMessage("tipo", "Tipo de Pessoa Inválido!"));
+		}
+		
+		Optional<Cliente> c = repo.findByEmail(dto.getEmail());
+		if(c.isPresent()) {
+			list.add(new FieldMessage("Email", "Email já cadastrado. Não pode ser cadastrado novamente!"));
 		}
 
 		for (FieldMessage fm : list) {
