@@ -1,0 +1,30 @@
+https://devcenter.heroku.com/articles/heroku-cli-commands#apps
+
+LOGAR NO HEROKU:
+COMANDO:  heroku login
+
+CRIAR APLICACAO NO HEROKU:
+COMANDO: heroku create nome_do_aplicativo
+
+CRIAR BANCO DE DADOS DO APLICATIVO
+COMANDO: heroku addons:create jawsdb
+
+PEGAR OS DADOS DO BANCO RECEM CRIADO
+COMANDO: heroku config:get JAWSDB_URL
+
+CRIAR VARIAVEIS NO HEROKU:
+COMANDO: heroku config:set NOME_DA_VARIAVEL=VALOR
+EXEMPLO:
+heroku config:set DATABASE_URL=jdbc:mysql://us-cdbr-iron-east-05.cleardb.net/heroku_3b46b32de4?reconnect=true
+heroku config:set DATABASE_USERNAME=bfcb5595f3
+heroku config:set DATABASE_PASSWORD=761a
+
+VER TODAS AS VARIAVES QUE ESTÃO CONFIGURADAS NO APLICATIVO
+COMANDO: heroku config
+
+
+# ABRA O TERMINAL NA PASTA DO PROJETO E EXECUTE OS COMANDOS ABAIXO
+# CONECT NO APP
+heroku git:remote -a jsm-curso-spring-ionic
+# PEGA URL DO BANCO
+heroku config | grep CLEARDB_DATABASE_URL
