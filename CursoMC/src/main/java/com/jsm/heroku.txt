@@ -1,4 +1,5 @@
 https://devcenter.heroku.com/articles/heroku-cli-commands#apps
+https://devcenter.heroku.com/articles/cleardb
 
 LOGAR NO HEROKU:
 COMANDO:  heroku login
@@ -22,9 +23,15 @@ heroku config:set DATABASE_PASSWORD=761a
 VER TODAS AS VARIAVES QUE ESTÃO CONFIGURADAS NO APLICATIVO
 COMANDO: heroku config
 
+CONECTAR NO BANCO DO HEROKU VIA PROMPT:
+EXEMPLO:
+mysql --host=us-cdbr-iron-east-05.cleardb.net --user=bfcb55595f3 --password=7e51a --reconnect heroku_3b4617b32de4
+
 
 # ABRA O TERMINAL NA PASTA DO PROJETO E EXECUTE OS COMANDOS ABAIXO
 # CONECT NO APP
 heroku git:remote -a jsm-curso-spring-ionic
 # PEGA URL DO BANCO
 heroku config | grep CLEARDB_DATABASE_URL
+
+
