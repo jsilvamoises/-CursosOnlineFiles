@@ -1,6 +1,7 @@
 package com.jsm.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
@@ -97,6 +99,16 @@ public class Pedido implements Serializable {
 	}
 	
 	
+	@Transient
+	public BigDecimal getValorTotal() {
+		BigDecimal bd = new BigDecimal(0);
+		for(ItemPedido ip:getItens()) {			
+			bd = 	bd.add(ip.getSubtotal());
+			System.out.println("BD To float: "+bd.floatValue());
+		}
+		
+		return bd;
+	}
 	
 
 	public Set<ItemPedido> getItens() {

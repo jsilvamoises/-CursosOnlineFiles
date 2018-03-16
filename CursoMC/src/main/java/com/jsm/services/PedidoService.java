@@ -1,5 +1,7 @@
 package com.jsm.services;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,14 +11,33 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.jsm.domain.ItemPedido;
+import com.jsm.domain.Pagamento;
+import com.jsm.domain.PagamentoComBoleto;
 import com.jsm.domain.Pedido;
+import com.jsm.domain.enums.EstadoPagamento;
+import com.jsm.repositories.ItemPedidoRepository;
+import com.jsm.repositories.PagamentoRepository;
 import com.jsm.repositories.PedidoRepository;
+import com.jsm.repositories.ProdutoRepository;
 import com.jsm.services.exception.ObjectNotFoundException;
 
 @Service
 public class PedidoService {
 	@Autowired
 	PedidoRepository rep;
+	
+	@Autowired
+	private BoletoService boletoService;
+	
+	@Autowired
+	private PagamentoRepository pgtoRep;
+	
+	@Autowired
+	private ProdutoRepository prodRep;
+	
+	@Autowired
+	private ItemPedidoRepository ipRep;
 
 	public Pedido get(Long id) {
 		Optional<Pedido>  cat = rep.findById(id);
@@ -37,7 +58,28 @@ public class PedidoService {
 	}
 
 	public Pedido post(Pedido entity) {
+		entity.setId(null);
+		entity.setInstante(new Date());
+		entity.getPagamento().setEstado(EstadoPagamento.PENDENTE);
+		entity.getPagamento().setPedido(entity);
+		if(entity.getPagamento() instanceof PagamentoComBoleto) {
+			PagamentoComBoleto pgto = (PagamentoComBoleto)entity.getPagamento();
+			boletoService.preencherPagamentoComBoleto(pgto,entity.getInstante());
+			
+		}
+				
 		entity = rep.save(entity);
+		Pagamento pg = pgtoRep.save(entity.getPagamento());
+		entity.setPagamento(pg);
+		
+		for(ItemPedido ip:entity.getItens()) {
+			ip.setDesconto(BigDecimal.ZERO);
+			ip.setPreco(prodRep.getOne(ip.getProduto().getId()).getPreco());
+			ip.setPedido(entity);
+		}
+		
+		ipRep.saveAll(entity.getItens());
+		
 		return entity;
 	}
 

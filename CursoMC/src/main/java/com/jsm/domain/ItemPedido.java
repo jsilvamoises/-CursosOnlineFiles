@@ -1,9 +1,11 @@
 package com.jsm.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,14 +19,14 @@ public class ItemPedido implements Serializable {
 	private ItemPedidoPK id = new ItemPedidoPK();
 	
 	
-	private Double desconto;
-	private Double quantidade;
-	private Double preco;
+	private BigDecimal desconto;
+	private BigDecimal quantidade;
+	private BigDecimal preco;
 	public ItemPedido() {
 		super();
 		
 	}
-	public ItemPedido(Pedido pedido, Produto produto, Double desconto, Double quantidade, Double preco) {
+	public ItemPedido(Pedido pedido, Produto produto, BigDecimal desconto, BigDecimal quantidade, BigDecimal preco) {
 		super();
 		
 		this.id.setPedido(pedido);
@@ -40,22 +42,22 @@ public class ItemPedido implements Serializable {
 	public void setId(ItemPedidoPK id) {
 		this.id = id;
 	}
-	public Double getDesconto() {
+	public BigDecimal getDesconto() {
 		return desconto;
 	}
-	public void setDesconto(Double desconto) {
+	public void setDesconto(BigDecimal desconto) {
 		this.desconto = desconto;
 	}
-	public Double getQuantidade() {
+	public BigDecimal getQuantidade() {
 		return quantidade;
 	}
-	public void setQuantidade(Double quantidade) {
+	public void setQuantidade(BigDecimal quantidade) {
 		this.quantidade = quantidade;
 	}
-	public Double getPreco() {
+	public BigDecimal getPreco() {
 		return preco;
 	}
-	public void setPreco(Double preco) {
+	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
 	}
 	
@@ -67,6 +69,28 @@ public class ItemPedido implements Serializable {
 	@JsonIgnore
 	public Pedido getPedido() {		
 		return this.getPedido();
+	}
+	
+	
+	public void setPedido(Pedido pedido) {
+	     this.id.setPedido(pedido);
+	}
+	
+	public void setProduto(Produto produto) {
+		this.id.setProduto(produto);
+	}
+	
+	
+	@Transient
+	public BigDecimal getSubtotal() {
+//		System.out.println("Preco:"+preco);
+//		System.out.println("Desconto:"+desconto);
+//		
+//		System.out.println("Quantidade:"+quantidade);
+//		System.out.println("SubTotal: "+(preco.subtract(desconto)).multiply(quantidade));
+		BigDecimal bd = (preco.subtract(desconto)).multiply(quantidade);
+//		System.out.println("BD: "+bd);
+		return bd;
 	}
 	
 	

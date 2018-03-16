@@ -21,15 +21,24 @@ CREATE TABLE IF NOT EXISTS `categoria` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Copiando dados para a tabela db_example.categoria: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` (`id`, `nome`) VALUES
-	(1, 'Limpeza'),
-	(2, 'Higiene Pessoal'),
-	(3, 'Bebida'),
-	(4,'Frios');
+INSERT INTO `categoria` (`nome`) VALUES
+	('Limpeza'),
+	('Higiene Pessoal'),
+	('Bebida'),
+	('Frios'),
+	('Eletronicos'),
+	('Eletrodomestico'),
+	('Automotivos'),
+	('Graos'),
+	('Pereciveis'),
+	('Tóxicos'),
+	('Cama / Mesa / Banho'),
+	('Churrasco')
+	;
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela db_example.cidade
@@ -40,14 +49,14 @@ CREATE TABLE IF NOT EXISTS `cidade` (
   PRIMARY KEY (`id`),
   KEY `FKkworrwk40xj58kevvh3evi500` (`estado_id`),
   CONSTRAINT `FKkworrwk40xj58kevvh3evi500` FOREIGN KEY (`estado_id`) REFERENCES `estado` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Copiando dados para a tabela db_example.cidade: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `cidade` DISABLE KEYS */;
-INSERT INTO `cidade` (`id`, `nome`, `estado_id`) VALUES
-	(1, 'Uberlandia', 1),
-	(2, 'São Paulo', 2),
-	(3, 'Campinas', 2);
+INSERT INTO `cidade` (`nome`, `estado_id`) VALUES
+	('Uberlandia', 1),
+	('São Paulo', 2),
+	('Campinas', 2);
 /*!40000 ALTER TABLE `cidade` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela db_example.cliente
@@ -101,15 +110,15 @@ CREATE TABLE IF NOT EXISTS `estado` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `nome` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Copiando dados para a tabela db_example.estado: ~6 rows (aproximadamente)
 /*!40000 ALTER TABLE `estado` DISABLE KEYS */;
-INSERT INTO `estado` (`id`, `nome`) VALUES
-	(1, 'Minas Gerais'),
-	(2, 'São Paulo'),
-	(3, 'Rio de Janeiro'),
-	(4, 'Bahia');
+INSERT INTO `estado` (`nome`) VALUES
+	('Minas Gerais'),
+	('São Paulo'),
+	('Rio de Janeiro'),
+	('Bahia');
 /*!40000 ALTER TABLE `estado` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela db_example.item_pedido
@@ -203,14 +212,24 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `nome` varchar(255) DEFAULT NULL,
   `preco` decimal(19,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Copiando dados para a tabela db_example.produto: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `produto` DISABLE KEYS */;
-INSERT INTO `produto` (`id`, `nome`, `preco`) VALUES
-	(1, 'Caneta Esferográfica Premium', 10.00),
-	(2, 'Chip de computador', 18.00),
-	(3, 'Impressora e kit com mouse', 33.00);
+INSERT INTO `produto` (`nome`, `preco`) VALUES
+	('Caneta Esferográfica Premium', 42.00),
+	('Borracha para lapis', 18.00),
+	('Caderno 10M', 19.00),
+	('Caderno 1M', 15.00),
+	('Agua Mineral', 2.00),
+	('Veneno de Barata', 9.00),
+	('IPhone 10', 1870.00),
+	('Computador Dell', 1800.00),
+	('Guarda Roupas', 440.00),
+	('Guarda Chuvas', 60.00),
+	('Meias', 22.00),
+	('Ziper', 1.00),
+	('Impressora e kit com mouse', 33.00);
 /*!40000 ALTER TABLE `produto` ENABLE KEYS */;
 
 -- Copiando estrutura para tabela db_example.produto_categoria
