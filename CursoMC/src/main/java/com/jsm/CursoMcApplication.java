@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class CursoMcApplication implements CommandLineRunner {
-
+// ULTIMA AULA ASSISTIDA = 45
 //	@Autowired
 //	private CategoriaService catService;
 //	
