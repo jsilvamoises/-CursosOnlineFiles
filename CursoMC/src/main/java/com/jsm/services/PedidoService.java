@@ -11,12 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.jsm.domain.Cliente;
 import com.jsm.domain.ItemPedido;
 import com.jsm.domain.Pagamento;
 import com.jsm.domain.PagamentoComBoleto;
 import com.jsm.domain.Pedido;
 import com.jsm.domain.enums.EstadoPagamento;
+import com.jsm.email.interfaces.EmailService;
 import com.jsm.repositories.ClienteRepository;
 import com.jsm.repositories.ItemPedidoRepository;
 import com.jsm.repositories.PagamentoRepository;
@@ -43,6 +43,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ClienteRepository cliRep;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public Pedido get(Long id) {
 		Optional<Pedido>  cat = rep.findById(id);
@@ -62,39 +65,41 @@ public class PedidoService {
 		return rep.findAll(pageable);
 	}
 
-	public Pedido post(Pedido entity) {
-		entity.setId(null);
+	public Pedido post(Pedido obj) {
+		obj.setId(null);
 		
 		
 		
-		entity.setInstante(new Date());
-		entity.getPagamento().setEstado(EstadoPagamento.PENDENTE);
-		entity.getPagamento().setPedido(entity);
-		if(entity.getPagamento() instanceof PagamentoComBoleto) {
-			PagamentoComBoleto pgto = (PagamentoComBoleto)entity.getPagamento();
-			boletoService.preencherPagamentoComBoleto(pgto,entity.getInstante());
+		obj.setInstante(new Date());
+		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
+		obj.getPagamento().setPedido(obj);
+		if(obj.getPagamento() instanceof PagamentoComBoleto) {
+			PagamentoComBoleto pgto = (PagamentoComBoleto)obj.getPagamento();
+			boletoService.preencherPagamentoComBoleto(pgto,obj.getInstante());
 			
 		}
 				
-		entity = rep.save(entity);
+		obj = rep.save(obj);
 		
-		Pagamento pg = pgtoRep.save(entity.getPagamento());
-		entity.setPagamento(pg);
+		Pagamento pg = pgtoRep.save(obj.getPagamento());
+		obj.setPagamento(pg);
 		
-		for(ItemPedido ip:entity.getItens()) {
+		for(ItemPedido ip:obj.getItens()) {
 			ip.setDesconto(BigDecimal.ZERO);
 			ip.setPreco(prodRep.getOne(ip.getProduto().getId()).getPreco());
-			ip.setPedido(entity);
+			ip.setPedido(obj);
 		}
 		
-		ipRep.saveAll(entity.getItens());
+		ipRep.saveAll(obj.getItens());
 		
 		
-		entity = rep.getOne(entity.getId());
+		obj = rep.getOne(obj.getId());
 		
-		System.out.println(entity);
+		//System.out.println(entity);
 		
-		return entity;
+		emailService.sendOrderConfirmationEmail(obj);
+		
+		return obj;
 	}
 
 	public Pedido put(Long id, Pedido entity) {

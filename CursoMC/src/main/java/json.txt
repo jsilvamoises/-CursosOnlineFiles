@@ -1,0 +1,16 @@
+## CADASTRAR EMAIL NO SERVIDOR ##
+{
+  "departamentoSigla": "VD",
+  "host": "string",
+  "id": 0,
+  "password": "string",
+  "props": [
+    {
+      "id": 0,
+      "property": "string",
+      "value": "string"
+    }
+  ],
+  "provedor": "string",
+  "username": "string"
+}
