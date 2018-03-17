@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -139,9 +140,31 @@ public class Endereco implements Serializable {
 			return false;
 		return true;
 	}
+	
+	
+	
+	public String enderecoString() {
+		StringBuilder sb = new StringBuilder();
+		sb
+		.append(logradouro)
+		.append(" ")
+		.append(numero)
+		.append(" ")
+		.append(bairro)
+		.append(" ")
+		.append(cep)
+		.append(" ")
+		.append(getCidade())
+		.append(" ")
+		.append(getCidade().getEstado().getNome());
+		return sb.toString();
+	}
 
 	@Override
 	public String toString() {
+	
+		
+		
 		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
 				+ complemento + ", bairro=" + bairro + ", cep=" + cep + "]";
 	}

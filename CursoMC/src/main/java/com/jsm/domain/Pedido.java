@@ -146,9 +146,33 @@ public class Pedido implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", instante=" + instante + ", pagamento=" + pagamento + ", cliente=" + cliente
-				+ ", enderecoEntrega=" + enderecoEntrega + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nPedido Nº ");
+		builder.append(getId());
+		builder.append("\ninstante: ");
+		builder.append(instante);
+		builder.append("\nSit Pagamento: ");
+		builder.append(pagamento.getEstado().getDescricao());
+		builder.append("\nCliente: ");
+		builder.append(cliente.getNome());
+		
+		if(enderecoEntrega!=null) {
+			builder.append("\nEnderecoEntrega: ");
+			builder.append(enderecoEntrega.toString());
+		}
+		
+		builder.append("\n####### ITENS DO PEDIDO #######\n");
+		
+		for(ItemPedido ip:getItens()) {
+			builder.append(ip.toString());
+		}
+		builder.append("\nValor Total: ");
+		builder.append(getValorTotal());
+		return builder.toString();
 	}
+   
+	
+	
 	
 	
 

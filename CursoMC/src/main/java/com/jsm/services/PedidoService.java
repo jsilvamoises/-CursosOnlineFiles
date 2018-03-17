@@ -11,11 +11,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.jsm.domain.Cliente;
 import com.jsm.domain.ItemPedido;
 import com.jsm.domain.Pagamento;
 import com.jsm.domain.PagamentoComBoleto;
 import com.jsm.domain.Pedido;
 import com.jsm.domain.enums.EstadoPagamento;
+import com.jsm.repositories.ClienteRepository;
 import com.jsm.repositories.ItemPedidoRepository;
 import com.jsm.repositories.PagamentoRepository;
 import com.jsm.repositories.PedidoRepository;
@@ -38,6 +40,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository ipRep;
+	
+	@Autowired
+	private ClienteRepository cliRep;
 
 	public Pedido get(Long id) {
 		Optional<Pedido>  cat = rep.findById(id);
@@ -59,6 +64,9 @@ public class PedidoService {
 
 	public Pedido post(Pedido entity) {
 		entity.setId(null);
+		
+		
+		
 		entity.setInstante(new Date());
 		entity.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		entity.getPagamento().setPedido(entity);
@@ -69,6 +77,7 @@ public class PedidoService {
 		}
 				
 		entity = rep.save(entity);
+		
 		Pagamento pg = pgtoRep.save(entity.getPagamento());
 		entity.setPagamento(pg);
 		
@@ -79,6 +88,11 @@ public class PedidoService {
 		}
 		
 		ipRep.saveAll(entity.getItens());
+		
+		
+		entity = rep.getOne(entity.getId());
+		
+		System.out.println(entity);
 		
 		return entity;
 	}
