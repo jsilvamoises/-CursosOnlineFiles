@@ -12,7 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.jsm.email.interfaces.EmailService;
+import com.jsm.email.EmailService;
 
 public abstract class AbstractEmailServiceImpl<T> implements EmailService<T> {
 	private static Logger LOG = LoggerFactory.getLogger(AbstractEmailServiceImpl.class);

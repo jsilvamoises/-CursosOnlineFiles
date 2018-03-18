@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,9 @@ public class ClienteResource {
 
 	@Autowired
 	ClienteService service;
+	
+	@Autowired
+	BCryptPasswordEncoder encoder;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Cliente> get(@PathVariable Long id) {
@@ -56,14 +60,18 @@ public class ClienteResource {
 	
 
 	@PostMapping
-	public ResponseEntity<Void> post(@Valid @RequestBody ClienteNewDTO dto) {
-		Cliente obj = service.fromDTO(dto);
-
-		service.post(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(obj.getId())
+	public ResponseEntity<Void> post(@Valid @RequestBody Cliente dto) {
+		System.out.println("DTO "+dto.toString());
+		
+		dto.setPassword(encoder.encode(dto.getPassword()));
+	
+		service.post(dto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(dto.getId())
 				.toUri();
 
 		return ResponseEntity.created(uri).build();
+		
+		
 	}
 
 	@PutMapping("/{id}")

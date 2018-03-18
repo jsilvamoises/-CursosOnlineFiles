@@ -20,7 +20,7 @@ import com.jsm.domain.PagamentoComBoleto;
 import com.jsm.domain.Pedido;
 import com.jsm.domain.Produto;
 import com.jsm.domain.enums.EstadoPagamento;
-import com.jsm.email.interfaces.EmailService;
+import com.jsm.email.EmailService;
 import com.jsm.repositories.ClienteRepository;
 import com.jsm.repositories.EnderecoRepository;
 import com.jsm.repositories.ItemPedidoRepository;

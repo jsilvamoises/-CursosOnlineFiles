@@ -26,6 +26,10 @@ public class ClienteNewDTO implements Serializable {
 	@Column(name="cpf_cnpj",unique=true)
 	private String cpfCnpj;
 	
+	@NotEmpty
+	@Column(name="password",unique=true)
+	private String password;
+	
 	@NotNull
 	private Integer tipo;
 	// TELEFONES
@@ -130,6 +134,46 @@ public class ClienteNewDTO implements Serializable {
 	}
 	public void setCidadeId(Long cidadeId) {
 		this.cidadeId = cidadeId;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ClienteNewDTO [email=");
+		builder.append(email);
+		builder.append(", nome=");
+		builder.append(nome);
+		builder.append(", cpfCnpj=");
+		builder.append(cpfCnpj);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append(", tipo=");
+		builder.append(tipo);
+		builder.append(", Telefone1=");
+		builder.append(Telefone1);
+		builder.append(", telefone2=");
+		builder.append(telefone2);
+		builder.append(", telefone3=");
+		builder.append(telefone3);
+		builder.append(", logradouro=");
+		builder.append(logradouro);
+		builder.append(", numero=");
+		builder.append(numero);
+		builder.append(", complemento=");
+		builder.append(complemento);
+		builder.append(", bairro=");
+		builder.append(bairro);
+		builder.append(", cep=");
+		builder.append(cep);
+		builder.append(", cidadeId=");
+		builder.append(cidadeId);
+		builder.append("]");
+		return builder.toString();
 	}
 	
 	

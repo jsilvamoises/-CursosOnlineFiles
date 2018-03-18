@@ -52,6 +52,8 @@ public class Endereco implements Serializable {
 		this.cliente =cliente;
 	}
 
+	
+
 	public Long getId() {
 		return id;
 	}

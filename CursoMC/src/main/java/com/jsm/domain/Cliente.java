@@ -11,21 +11,25 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jsm.domain.enums.TipoCliente;
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+import com.jsm.security.enums.Perfil;
+
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @Entity
-@Table(
-		name="cliente",
-		uniqueConstraints= {@UniqueConstraint(columnNames= {"email","cpf_cnpj"})})
+@Table(name = "cliente", uniqueConstraints = { @UniqueConstraint(columnNames = { "email", "cpf_cnpj" }) })
 public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,38 +37,40 @@ public class Cliente implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name="email",unique=true)
+	@Column(name = "email", unique = true)
 	private String email;
-	
+
 	private String nome;
-	
-	@Column(name="cpf_cnpj",unique=true)
+
+	@Column(name = "cpf_cnpj", unique = true)
 	private String cpfCnpj;
-	
+
 	private Integer tipo;
 
 	
-	@OneToMany(mappedBy = "cliente",cascade= {CascadeType.ALL})
+	@NotEmpty
+	@Column(name = "password", nullable = false)
+	private String password;
+
+	@OneToMany(mappedBy = "cliente", cascade = { CascadeType.ALL })
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection
 	@CollectionTable(name = "telefone")
 	private Set<String> telefones = new HashSet<>();
 
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy = "cliente")
 	@JsonIgnore
 	private List<Pedido> pedidos = new ArrayList<>();
 
-	public Cliente(Long id, String email, String nome, String cpfCnpj, TipoCliente tipo) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.nome = nome;
-		this.cpfCnpj = cpfCnpj;
-		this.tipo = tipo.getCodigo();
-	}
-
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="perfis")
+	@Enumerated(EnumType.STRING)	
+	public Set<Perfil> perfis = new HashSet<>();
+	
+	
 	public Cliente() {
+		perfis.add(Perfil.USER);
 	}
 
 	public Long getId() {
@@ -124,12 +130,31 @@ public class Cliente implements Serializable {
 
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+	
+	
+	
+
+	public Set<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(Set<Perfil> perfis) {
+		this.perfis = perfis;
 	}
 
 	@Override

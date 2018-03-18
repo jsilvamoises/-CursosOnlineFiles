@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.jsm.domain.Cidade;
@@ -27,6 +28,8 @@ public class ClienteService {
 
 	@Autowired
 	CidadeRepository cidadeRepository;
+	
+	
 
 	public Cliente get(Long id) {
 		Optional<Cliente> cat = rep.findById(id);
@@ -47,6 +50,9 @@ public class ClienteService {
 	}
 
 	public Cliente post(Cliente entity) {
+//		if(entity.getId() == null || entity.getId() == 0) {
+//			entity.setPassword(encoder.encode(entity.getPassword()));
+//		}
 		entity = rep.save(entity);
 		return entity;
 	}
@@ -76,32 +82,27 @@ public class ClienteService {
 		return obj;
 	}
 
-	public Cliente fromDTO(@Valid ClienteNewDTO dto) {
+	public Cliente fromDTO(ClienteNewDTO dto) {
 		Cliente cliente = new Cliente();
-		Endereco endereco = new Endereco();
-
-		// Copia os dados do dto para o cliente e endereco
-		BeanUtils.copyProperties(dto, cliente,"id");
-		BeanUtils.copyProperties(dto, endereco,"id");
 		
-		// Vicula cliente e enderecos
-		cliente.getEnderecos().add(endereco);
-		endereco.setCliente(cliente);
-
-		// Busca um cidade baseada no ID
-		Cidade cidade = cidadeRepository.getOne(dto.getCidadeId());
-		// Insere a cidade no Endereco
-		endereco.setCidade(cidade);
-		// Cria um array de strings com os telefones enviados via post
 		String[] telefones = { dto.getTelefone1(), dto.getTelefone2(), dto.getTelefone3() };
-		// Verifica se todos os telefones estão preenchidos para evitar de preencher com
-		// vazio
+		
+		Cidade cidade = cidadeRepository.getOne(dto.getCidadeId());
+		Endereco endereco = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(), dto.getBairro(), dto.getCep(), cidade, cliente);
+			
+		cliente.setCpfCnpj(dto.getCpfCnpj());
+		cliente.setEmail(dto.getEmail());
+		cliente.getEnderecos().add(endereco);
+		cliente.setNome(dto.getNome());
+		cliente.setPassword(dto.getPassword());
+		cliente.setTipo(dto.getTipo().intValue());
+				
 		for (String t : telefones) {
 			if (!t.trim().isEmpty()) {
 				cliente.getTelefones().add(t);
 			}
 		}
-
+		System.out.println("CLIENTE: "+cliente);
 		return cliente;
 	}
 

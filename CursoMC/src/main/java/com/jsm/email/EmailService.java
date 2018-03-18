@@ -1,4 +1,4 @@
-package com.jsm.email.interfaces;
+package com.jsm.email;
 
 import javax.mail.internet.MimeMessage;
 
