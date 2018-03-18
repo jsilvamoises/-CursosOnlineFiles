@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,7 +41,7 @@ public class Pedido implements Serializable {
 	@JoinColumn(name="cliente_id")	
 	private Cliente cliente;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="enderece_entrega_id")
 	private Endereco enderecoEntrega;	
 	
@@ -103,7 +106,7 @@ public class Pedido implements Serializable {
 	public BigDecimal getValorTotal() {
 		BigDecimal bd = new BigDecimal(0);
 		for(ItemPedido ip:getItens()) {			
-			bd = 	bd.add(ip.getSubtotal());
+			bd = 	bd.add(ip.getSubTotal());
 			System.out.println("BD To float: "+bd.floatValue());
 		}
 		

@@ -1,13 +1,19 @@
 package com.jsm.email.interfaces;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.mail.SimpleMailMessage;
 
-import com.jsm.domain.Pedido;
+public interface EmailService<T> {
 
-public interface EmailService {
+	void sendTextPlainEmail(T object);
 
-	void sendOrderConfirmationEmail(Pedido pedido);
 	void sendEmail(SimpleMailMessage msg);
+
+	void sendHtmlEmail(T object);
+
+	void sendHtmlEmail(MimeMessage mm);
 	
-	
+	String htmlFromTemplate(String uri,String objVariable, T obj, Object...objects );
+
 }

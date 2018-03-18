@@ -8,7 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 @Entity
 public class ItemPedido implements Serializable {
@@ -82,7 +83,7 @@ public class ItemPedido implements Serializable {
 	
 	
 	@Transient
-	public BigDecimal getSubtotal() {
+	public BigDecimal getSubTotal() {
 //		System.out.println("Preco:"+preco);
 //		System.out.println("Desconto:"+desconto);
 //		
@@ -126,7 +127,7 @@ public class ItemPedido implements Serializable {
 		builder.append(", PREÇO UNITÁRIO: ");
 		builder.append(getPreco());
 		builder.append(", SUBTOTAL: ");
-		builder.append(getSubtotal());
+		builder.append(getSubTotal());
 		builder.append("\n");		
 		return builder.toString();
 	}

@@ -14,3 +14,8 @@
   "provedor": "string",
   "username": "string"
 }
+
+
+
+https://memorynotfound.com/spring-security-forgot-password-send-email-reset-password/
+https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html

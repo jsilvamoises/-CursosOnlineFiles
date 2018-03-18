@@ -35,3 +35,8 @@ heroku git:remote -a jsm-curso-spring-ionic
 heroku config | grep CLEARDB_DATABASE_URL
 
 
+heroku config:set SPRING_EMAIL_HOST=
+heroku config:set SPRIMG_EMAIL_USERNAME=
+heroku config:set SPRING_EMAIL_PASSWORD=
+
+

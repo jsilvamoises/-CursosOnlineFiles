@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=prod $JAVA_OPTS -jar target/CursoMC*.jar
+web: java -Dserver.port=$PORT -Dspring.profiles.active=prod -Dspring.mail.host=${SPRING_EMAIL_HOST} -Dspring.mail.username=${SPRIMG_EMAIL_USERNAME} -Dspring.mail.password=${SPRING_EMAIL_PASSWORD} $JAVA_OPTS -jar target/CursoMC*.jar
