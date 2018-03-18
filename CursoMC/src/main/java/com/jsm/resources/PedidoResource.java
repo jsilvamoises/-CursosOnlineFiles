@@ -5,6 +5,8 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.jsm.domain.Categoria;
 import com.jsm.domain.Pedido;
-import com.jsm.dto.CategoriaDTO;
 import com.jsm.services.PedidoService;
 
 @RestController
@@ -39,5 +39,15 @@ public class PedidoResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(dto.getId())
 				.toUri();
 		return ResponseEntity.created(uri).body(dto);
+	}
+	
+	
+	@GetMapping("/meus-pedidos")
+	public ResponseEntity<Page<Pedido>> get(Pageable pageable){
+		pageable.getSort().by("instante");
+		pageable.getSort().descending();
+		Page<Pedido> page = service.getByCliente(pageable);
+	    return ResponseEntity.ok(page);
+		
 	}
 }

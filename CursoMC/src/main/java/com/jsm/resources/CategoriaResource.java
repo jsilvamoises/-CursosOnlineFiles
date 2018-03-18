@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,20 +34,20 @@ public class CategoriaResource {
 
 	@Autowired
 	CategoriaService service;
-
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Categoria> get(@PathVariable Long id) {
 		Categoria cat = service.get(id);
 		return ResponseEntity.ok(cat);
 	}
-
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<CategoriaDTO>> get() {
 		List<Categoria> listObj = service.get();
 		List<CategoriaDTO> listDTO = listObj.stream().map(dto -> new CategoriaDTO(dto)).collect(Collectors.toList());
 		return ResponseEntity.ok(listDTO);
 	}
-
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/p")
 	ResponseEntity<Page<Categoria>> get(Pageable pageable) {
 		Page<Categoria> page = service.get(pageable);
@@ -63,6 +64,7 @@ public class CategoriaResource {
 	 * @param direction
 	 * @return
 	 */
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@Deprecated
 	@GetMapping("/paged")
 	ResponseEntity<Page<CategoriaDTO>> get(@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
@@ -76,6 +78,7 @@ public class CategoriaResource {
 		return ResponseEntity.ok(pageDTO);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<CategoriaDTO> post(@Valid @RequestBody CategoriaDTO dto) {
 		Categoria obj = service.fromDTO(dto);
@@ -86,13 +89,14 @@ public class CategoriaResource {
 
 		return ResponseEntity.created(uri).body(new CategoriaDTO(obj));
 	}
-
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<CategoriaDTO> put(@PathVariable Long id, @Valid @RequestBody CategoriaDTO dto) {
 		Categoria obj = service.put(id, service.fromDTO(dto));
 		return ResponseEntity.ok(new CategoriaDTO(obj));
 	}
-
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> delete(@PathVariable Long id) {
 		service.delete(id);

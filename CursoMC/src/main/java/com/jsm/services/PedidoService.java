@@ -27,6 +27,9 @@ import com.jsm.repositories.ItemPedidoRepository;
 import com.jsm.repositories.PagamentoRepository;
 import com.jsm.repositories.PedidoRepository;
 import com.jsm.repositories.ProdutoRepository;
+import com.jsm.security.UserSS;
+import com.jsm.security.service.UserService;
+import com.jsm.security.service.exception.AuthorizationException;
 import com.jsm.services.exception.ObjectNotFoundException;
 
 @Service
@@ -131,7 +134,20 @@ public class PedidoService {
 	}
 	
 	public void delete(Long id) {
+
 		get(id);
 		rep.deleteById(id);
+	}
+	
+	public Page<Pedido> getByCliente(Pageable pageable){
+		UserSS user = UserService.autheticated();
+		
+		if(user == null) {
+			throw new AuthorizationException("Acesso Negado!");
+		}
+		Cliente cli = cliRep.getOne(user.getId());
+		
+		return rep.findByCliente(cli, pageable);
+		
 	}
 }
