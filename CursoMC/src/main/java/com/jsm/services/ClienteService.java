@@ -1,5 +1,8 @@
 package com.jsm.services;
 
+import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,10 +10,15 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.jsm.amazon.exception.FileException;
+import com.jsm.amazon.service.ImageService;
+import com.jsm.amazon.service.S3Service;
 import com.jsm.domain.Cidade;
 import com.jsm.domain.Cliente;
 import com.jsm.domain.Endereco;
@@ -31,6 +39,20 @@ public class ClienteService {
 
 	@Autowired
 	CidadeRepository cidadeRepository;
+	
+	
+	
+	@Autowired
+	private ImageService imageService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String imgPrefix;
+	
+	@Value("${img.profile.size}")
+	private int imageSize;
+	
+	@Autowired
+	private S3Service s3Service;
 
 	public Cliente get(Long id) {
 		UserSS user = UserService.autheticated();
@@ -112,6 +134,35 @@ public class ClienteService {
 		}
 		System.out.println("CLIENTE: " + cliente);
 		return cliente;
+	}
+	
+	public URI uploadImage(MultipartFile mpf) {
+		
+		UserSS user = UserService.autheticated();
+		if(user ==null) {
+			throw new AuthorizationException("Acesso Negado!");
+		}
+		
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(mpf);
+		String fileNameOut = imgPrefix+user.getId()+".jpg";
+		
+		jpgImage = imageService.cropSquare(jpgImage);
+		jpgImage  = imageService.resize(jpgImage, imageSize);
+		
+		try {
+			return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileNameOut, "image");
+		} catch (URISyntaxException e) {
+			throw new FileException(e.getMessage(), e.getCause());
+		}
+		
+		
+		/* URI uri = upService.uploadFile(mpf);
+		 * usado para salvar o nome da imagem no banco.
+		Cliente cliente = get(user.getId());
+		cliente.setFoto(uri.toString());
+		put(cliente.getId(), cliente);
+		*/
+		
 	}
 
 }

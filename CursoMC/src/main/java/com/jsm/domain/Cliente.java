@@ -47,7 +47,6 @@ public class Cliente implements Serializable {
 
 	private Integer tipo;
 
-	
 	@NotEmpty
 	@Column(name = "password", nullable = false)
 	private String password;
@@ -63,12 +62,14 @@ public class Cliente implements Serializable {
 	@JsonIgnore
 	private List<Pedido> pedidos = new ArrayList<>();
 
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="perfis")
-	@Enumerated(EnumType.STRING)	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "perfis")
+	@Enumerated(EnumType.STRING)
 	public Set<Perfil> perfis = new HashSet<>();
-	
-	
+
+	@Column(name = "foto")
+	private String foto;
+
 	public Cliente() {
 		perfis.add(Perfil.USER);
 	}
@@ -145,9 +146,6 @@ public class Cliente implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
-	
-	
-	
 
 	public Set<Perfil> getPerfis() {
 		return perfis;
@@ -155,6 +153,17 @@ public class Cliente implements Serializable {
 
 	public void setPerfis(Set<Perfil> perfis) {
 		this.perfis = perfis;
+	}
+	
+	
+	
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 	@Override

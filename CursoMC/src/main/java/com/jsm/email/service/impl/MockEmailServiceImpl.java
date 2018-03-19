@@ -17,12 +17,12 @@ public class MockEmailServiceImpl extends AbstractEmailServiceImpl {
 		
 	}
 	@Override
-	public void sendTextPlainEmail(Object object) {
+	public void sendTextPlainEmail(Object object,Object...objects) {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public void sendHtmlEmail(Object object) {
+	public void sendHtmlEmail(Object object,Object...objects) {
 		// TODO Auto-generated method stub
 		
 	}

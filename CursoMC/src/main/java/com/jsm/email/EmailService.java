@@ -6,11 +6,11 @@ import org.springframework.mail.SimpleMailMessage;
 
 public interface EmailService<T> {
 
-	void sendTextPlainEmail(T object);
+	void sendTextPlainEmail(T object,Object...objects);
 
 	void sendEmail(SimpleMailMessage msg);
 
-	void sendHtmlEmail(T object);
+	void sendHtmlEmail(T object,Object...objects);
 
 	void sendHtmlEmail(MimeMessage mm);
 	

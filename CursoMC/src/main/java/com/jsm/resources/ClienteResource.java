@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jsm.domain.Cliente;
-import com.jsm.domain.Pedido;
 import com.jsm.dto.ClienteDTO;
 import com.jsm.services.ClienteService;
 
@@ -35,17 +36,18 @@ public class ClienteResource {
 
 	@Autowired
 	ClienteService service;
-	
-	
-	
+
+
 	@Autowired
 	BCryptPasswordEncoder encoder;
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Cliente> get(@PathVariable Long id) {
 		Cliente cat = service.get(id);
 		return ResponseEntity.ok(cat);
 	}
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<ClienteDTO>> get() {
@@ -53,6 +55,7 @@ public class ClienteResource {
 		List<ClienteDTO> listDTO = listObj.stream().map(dto -> new ClienteDTO(dto)).collect(Collectors.toList());
 		return ResponseEntity.ok(listDTO);
 	}
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/p")
 	ResponseEntity<Page<Cliente>> get(Pageable pageable) {
@@ -60,28 +63,27 @@ public class ClienteResource {
 		return ResponseEntity.ok(page);
 	}
 
-	
 	@PostMapping
 	public ResponseEntity<Void> post(@Valid @RequestBody Cliente dto) {
-		System.out.println("DTO "+dto.toString());
-		
+		System.out.println("DTO " + dto.toString());
+
 		dto.setPassword(encoder.encode(dto.getPassword()));
-	
+
 		service.post(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(dto.getId())
 				.toUri();
 
 		return ResponseEntity.created(uri).build();
-		
-		
+
 	}
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<ClienteDTO> put(@PathVariable Long id, @Valid @RequestBody ClienteDTO dto) {
-		
-		System.out.println(id +" - "+dto);
+
+		System.out.println(id + " - " + dto);
 		Cliente obj = service.put(id, service.fromDTO(dto));
-		
+
 		return ResponseEntity.ok(new ClienteDTO(obj));
 	}
 
@@ -90,7 +92,11 @@ public class ClienteResource {
 		service.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Deleted!!!");
 	}
-	
-	
+
+	@PostMapping("/picture")
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name = "file") MultipartFile multipartFile) {
+		URI uri = service.uploadImage(multipartFile);
+		return ResponseEntity.created(uri).build();
+	}
 
 }

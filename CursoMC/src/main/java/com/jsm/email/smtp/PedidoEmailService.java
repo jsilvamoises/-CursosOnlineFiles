@@ -62,7 +62,7 @@ public class PedidoEmailService extends AbstractEmailServiceImpl<Pedido>  {
 
 
 	@Override
-	public void sendTextPlainEmail(Pedido object) {
+	public void sendTextPlainEmail(Pedido object,Object...objects) {
 		SimpleMailMessage sm = prepareSimpleMailFromPedido(object.getId());
 		sendEmail(sm);
 		
@@ -71,7 +71,7 @@ public class PedidoEmailService extends AbstractEmailServiceImpl<Pedido>  {
 
 
 	@Override
-	public void sendHtmlEmail(Pedido object) {
+	public void sendHtmlEmail(Pedido object,Object...objects) {
 		MimeMessage mm;
 		try {
 			mm = prepareMimeMessage(object);

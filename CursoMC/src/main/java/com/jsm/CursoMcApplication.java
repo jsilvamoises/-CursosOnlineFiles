@@ -12,6 +12,8 @@ public class CursoMcApplication implements CommandLineRunner {
 	@Autowired
 	BCryptPasswordEncoder encoder;
 	
+
+	
 	
 	public static void main(String[] args) {
 		
@@ -21,7 +23,7 @@ public class CursoMcApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		 System.out.println(encoder.encode("123456"));
-
+	
 	}
 	
 	 

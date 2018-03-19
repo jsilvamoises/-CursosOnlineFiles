@@ -1,0 +1,2 @@
+ALTER TABLE cliente 
+ADD COLUMN foto VARCHAR(255); 
