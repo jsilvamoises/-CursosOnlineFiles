@@ -34,7 +34,7 @@ public class EstadoResource {
 	@PostMapping
 	public ResponseEntity<Void> post(@Valid @RequestBody EstadoDTO dto) {
 		Estado estado = service.post(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(estado.getId())
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(estado.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}

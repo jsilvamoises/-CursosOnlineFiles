@@ -70,7 +70,7 @@ public class ClienteResource {
 		dto.setPassword(encoder.encode(dto.getPassword()));
 
 		service.post(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(dto.getId())
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId())
 				.toUri();
 
 		return ResponseEntity.created(uri).build();

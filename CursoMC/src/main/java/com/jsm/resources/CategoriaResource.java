@@ -29,7 +29,6 @@ import com.jsm.services.CategoriaService;
 
 @RestController
 @RequestMapping(value = "/categorias")
-
 public class CategoriaResource {
 
 	@Autowired
@@ -79,12 +78,12 @@ public class CategoriaResource {
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@PostMapping
+	@PostMapping()
 	public ResponseEntity<CategoriaDTO> post(@Valid @RequestBody CategoriaDTO dto) {
 		Categoria obj = service.fromDTO(dto);
 
 		service.post(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(obj.getId())
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(obj.getId())
 				.toUri();
 
 		return ResponseEntity.created(uri).body(new CategoriaDTO(obj));

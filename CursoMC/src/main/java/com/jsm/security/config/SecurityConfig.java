@@ -65,8 +65,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration conf = new CorsConfiguration();
+		conf.applyPermitDefaultValues();
+		conf.setAllowedMethods(Arrays.asList("POST","PUT","GET","DELETE","OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		source.registerCorsConfiguration("/**", conf);
+		
+		
+		
 		return source;
 	}
 
