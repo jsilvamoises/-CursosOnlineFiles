@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jsm.dto.EstadoDTO;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Estado implements Serializable {
@@ -33,6 +34,14 @@ public class Estado implements Serializable {
 	public Estado() {
 		super();
 
+	}
+	
+	public EstadoDTO toDTO() {
+		return new EstadoDTO(id, nome);
+	}
+	
+	public Estado(EstadoDTO estadoDto) {
+		this.nome = estadoDto.getNome();
 	}
 
 	public Estado(String nome) {

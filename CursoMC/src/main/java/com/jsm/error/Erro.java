@@ -4,33 +4,24 @@ import java.io.Serializable;
 
 public class Erro implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private Integer statusCode;
-	private String msg;
 	private Long timestamp;
-	
-	
+	private Integer status;
+	private String error;
+	private String message;
+	private String path;
 
-	public Erro(Integer statusCode, String msg, Long timestamp) {
+	public Erro() {
 		super();
-		this.statusCode = statusCode;
-		this.msg = msg;
+
+	}
+
+	public Erro(Long timestamp, Integer status, String error, String message, String path) {
+		super();
 		this.timestamp = timestamp;
-	}
-
-	public Integer getStatusCode() {
-		return statusCode;
-	}
-
-	public void setStatusCode(Integer statusCode) {
-		this.statusCode = statusCode;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
+		this.status = status;
+		this.error = error;
+		this.message = message;
+		this.path = path;
 	}
 
 	public Long getTimestamp() {
@@ -39,6 +30,38 @@ public class Erro implements Serializable {
 
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 }

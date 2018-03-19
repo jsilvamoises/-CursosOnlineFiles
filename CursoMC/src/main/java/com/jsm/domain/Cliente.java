@@ -47,6 +47,7 @@ public class Cliente implements Serializable {
 
 	private Integer tipo;
 
+	@JsonIgnore
 	@NotEmpty
 	@Column(name = "password", nullable = false)
 	private String password;

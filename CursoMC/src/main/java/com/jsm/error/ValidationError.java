@@ -9,8 +9,14 @@ public class ValidationError extends Erro implements Serializable {
 	
 	private List<FieldMessage> errors = new ArrayList<>();
 	
-	public ValidationError(Integer statusCode, String msg, Long timestamp) {
-		super(statusCode, msg, timestamp);
+
+	public ValidationError() {
+		super();
+		
+	}
+
+	public ValidationError(Long timestamp, Integer status, String error, String message, String path) {
+		super(timestamp, status, error, message, path);
 		
 	}
 

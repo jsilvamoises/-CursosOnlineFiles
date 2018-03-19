@@ -14,8 +14,8 @@ import com.jsm.security.service.exception.AuthorizationException;
 public class SecurityHandler {
 	@ExceptionHandler({AuthorizationException.class})
 	public ResponseEntity<Erro> objectNotFoundExceptionHandler(AuthorizationException ex, HttpServletRequest request){
-		Erro erro = new Erro(HttpStatus.FORBIDDEN.value(),ex.getMessage(),System.currentTimeMillis());
-		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
+		Erro erro = new Erro(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(), "Não Autorizado!", ex.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(erro);
 		
 	}
 	

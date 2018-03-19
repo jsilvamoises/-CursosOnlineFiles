@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jsm.dto.CidadeDTO;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -39,6 +40,11 @@ public class Cidade implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+	
+	
+	public CidadeDTO toDTO() {
+		return new CidadeDTO(id, nome, estado.getId());
 	}
 
 	public void setId(Long id) {

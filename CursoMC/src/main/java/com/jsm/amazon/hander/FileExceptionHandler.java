@@ -18,7 +18,7 @@ public class FileExceptionHandler {
 
 	@ExceptionHandler({ FileException.class })
 	public ResponseEntity<Erro> fileException(FileException ex, HttpServletRequest request) {
-		Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), System.currentTimeMillis());
+		Erro erro = new Erro(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Requisição Inválida!", ex.getMessage(), request.getRequestURI());		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
 
 	}
@@ -26,15 +26,14 @@ public class FileExceptionHandler {
 	@ExceptionHandler({ AmazonServiceException.class })
 	public ResponseEntity<Erro> amazonServiceException(AmazonServiceException ex, HttpServletRequest request) {
 		HttpStatus code = HttpStatus.valueOf(ex.getErrorCode());
-		Erro erro = new Erro(code.value(), ex.getMessage(), System.currentTimeMillis());
+		Erro erro = new Erro(System.currentTimeMillis(), code.value(), "Amazon Service Exception!", ex.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(code).body(erro);
 
 	}
 
 	@ExceptionHandler({ AmazonClientException.class })
 	public ResponseEntity<Erro> amazonClientException(AmazonClientException ex, HttpServletRequest request) {
-
-		Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), System.currentTimeMillis());
+		Erro erro = new Erro(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Amazon Cliente Exception!", ex.getMessage(), request.getRequestURI());		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
 
 	}
@@ -42,8 +41,7 @@ public class FileExceptionHandler {
 
 	@ExceptionHandler({ AmazonS3Exception.class })
 	public ResponseEntity<Erro> amazonS3Exception(AmazonS3Exception ex, HttpServletRequest request) {
-		//HttpStatus code = HttpStatus.valueOf(ex.getErrorCode());
-		Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), ex.getMessage(), System.currentTimeMillis());
+		Erro erro = new Erro(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(), "Amazon S3 Exception!", ex.getMessage(), request.getRequestURI());	
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
 
 	}

@@ -21,7 +21,7 @@ import com.jsm.security.util.JWTUtil;
 public class AuthResource {
 	@Autowired
 	private JWTUtil jwtUtil;
-	
+
 	@Autowired
 	private AuthService service;
 
@@ -30,9 +30,10 @@ public class AuthResource {
 		UserSS user = UserService.autheticated();
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
+		response.addHeader("access-control-expose-headers", "Authorization");
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PostMapping("/forgot")
 	public ResponseEntity<Void> forgot(@Valid @RequestBody EmailDTO dto) {
 		service.sendNewPassord(dto.getEmail());

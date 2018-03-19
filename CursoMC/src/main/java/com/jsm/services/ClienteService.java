@@ -165,4 +165,12 @@ public class ClienteService {
 		
 	}
 
+	public Cliente findByEmail(String email) {
+		Optional<Cliente> cli = rep.findByEmail(email);
+		if(!cli.isPresent()) {
+			throw new ObjectNotFoundException("Não foi encontrado cliente com esse email.");
+		}
+		return cli.get();
+	}
+
 }
