@@ -57,7 +57,7 @@ public class ClienteService {
 	public Cliente get(Long id) {
 		UserSS user = UserService.autheticated();
 
-		if (user == null || !user.hasHole(Perfil.ADMIN) || !id.equals(user.getId())) {
+		if (user == null || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			throw new AuthorizationException("Acesso Negado!");
 		}
 
@@ -114,7 +114,7 @@ public class ClienteService {
 	public Cliente fromDTO(ClienteNewDTO dto) {
 		Cliente cliente = new Cliente();
 
-		String[] telefones = { dto.getTelefone1(), dto.getTelefone2(), dto.getTelefone3() };
+		String[] telefones = { dto.getTelefone01(), dto.getTelefone02(), dto.getTelefone03() };
 
 		Cidade cidade = cidadeRepository.getOne(dto.getCidadeId());
 		Endereco endereco = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(),
@@ -167,10 +167,20 @@ public class ClienteService {
 
 	public Cliente findByEmail(String email) {
 		Optional<Cliente> cli = rep.findByEmail(email);
+		//ClienteDTO cdto = new ClienteDTO(cli.get());
 		if(!cli.isPresent()) {
 			throw new ObjectNotFoundException("Não foi encontrado cliente com esse email.");
 		}
 		return cli.get();
+	}
+	
+	public List<Endereco> findEnderecosByEmail(String email) {
+		Optional<Cliente> cli = rep.findByEmail(email);
+		
+		if(!cli.isPresent()) {
+			throw new ObjectNotFoundException("Não foi encontrado cliente com esse email.");
+		}
+		return cli.get().getEnderecos();
 	}
 
 }

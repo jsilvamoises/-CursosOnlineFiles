@@ -28,11 +28,11 @@ public class FieldMessage implements Serializable {
 		this.fieldName = fieldName;
 	}
 
-	public String getFielMessage() {
+	public String getFieldMessage() {
 		return fieldMessage;
 	}
 
-	public void setFielMessage(String fielMessage) {
+	public void setFieldMessage(String fielMessage) {
 		this.fieldMessage = fielMessage;
 	}
 

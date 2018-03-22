@@ -28,9 +28,9 @@ import com.jsm.security.util.JWTUtil;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**", "/clientes/**" };
+	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**", "/clientes/**","/**" };
 
-	private static final String[] PUBLIC_MATCHERS_GET = { "/h2-console/**", "/produtos/**", "/categorias/**","/estados/**" ,"/cidades/**"};
+	private static final String[] PUBLIC_MATCHERS_GET = { "/h2-console/**", "/produtos/**", "/categorias/**","/estados/**" ,"/cidades/**","/clientes/**"};
 
 	private static final String[] PUBLIC_MATCHERS_POST = { "/clientes","/auth/forgot/**","/clientes" };
 

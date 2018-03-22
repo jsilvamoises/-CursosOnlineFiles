@@ -2,6 +2,7 @@ package com.jsm.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.jsm.domain.Categoria;
 import com.jsm.domain.Produto;
+import com.jsm.dto.ProdutoDTO;
 import com.jsm.repositories.CategoriaRepository;
 import com.jsm.repositories.ProdutoRepository;
 import com.jsm.services.exception.ObjectNotFoundException;
@@ -67,4 +69,18 @@ public class ProdutoService {
 		List<Categoria> categorias = catRep.findAllById(ids);
 		return rep.findDistincByNomeContainingAndCategoriasIn(nome, categorias, pageable);
 	}
+	
+	public Page<ProdutoDTO> byCategoriasIn(String ids, Pageable pageable){
+		String array[] = ids.split(",");
+		Long[]  longArray = new Long[array.length];
+		for(int i = 0;i < array.length;i++) {
+			longArray[i] = Long.valueOf(array[i]);
+		}
+		
+		Page<Produto> produtos = rep.findByCategoriasIdIn(longArray, pageable);
+		Page<ProdutoDTO> pageDto = produtos.map(p -> p.toDTO());
+		return pageDto;
+	}
+	
+	
 }

@@ -31,4 +31,7 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
     
     @Transactional(readOnly=true)
     public Page<Produto> findDistincByNomeContainingAndCategoriasIn(String nome,List<Categoria> categorias,Pageable pageable);
+    
+    @Transactional(readOnly=true)
+    public Page<Produto> findByCategoriasIdIn(Long ids[], Pageable pageable);
 }

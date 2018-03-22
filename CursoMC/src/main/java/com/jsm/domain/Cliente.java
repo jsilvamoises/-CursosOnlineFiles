@@ -25,6 +25,7 @@ import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jsm.domain.enums.TipoCliente;
+import com.jsm.dto.ClienteNewDTO;
 import com.jsm.security.enums.Perfil;
 
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -156,6 +157,30 @@ public class Cliente implements Serializable {
 		this.perfis = perfis;
 	}
 	
+	
+	public Cliente dtoNewToCliente(ClienteNewDTO dto) {
+		this.setCpfCnpj(dto.getCpfCnpj());
+		this.setEmail(dto.getEmail());
+		this.setNome(dto.getNome());
+		this.setPassword(dto.getPassword());
+		this.setTipo(dto.getTipo());
+		
+		String[] telefones = {dto.getTelefone01(),dto.getTelefone02(),dto.getTelefone03()};
+		
+		for(String s:telefones) {
+			if(!s.isEmpty()) {
+				this.getTelefones().add(s);
+			}
+		}
+		
+		Cidade cidade = new Cidade();
+		cidade.setId(dto.getCidadeId());
+		
+		Endereco endereco = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(), dto.getBairro(), dto.getCep(), cidade, this);
+	
+		this.getEnderecos().add(endereco);
+		return this;
+	}
 	
 	
 

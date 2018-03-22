@@ -31,6 +31,15 @@ public class ProdutoDTO implements Serializable {
 		this.preco = preco;
 	}
 	
+	
+	
+	public ProdutoDTO(Long id, @NotEmpty String nome, @NotNull BigDecimal preco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.preco = preco;
+	}
+
 	public ProdutoDTO(Produto obj) {
 		this.id = obj.getId();
 		this.nome = obj.getNome();

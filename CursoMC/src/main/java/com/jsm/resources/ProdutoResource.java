@@ -48,5 +48,15 @@ public class ProdutoResource {
 		return ResponseEntity.ok(listDTO);
 	}
 	
+	
+	@GetMapping("/categorias/{ids}")
+	public ResponseEntity<Page<ProdutoDTO>> getByCategorias(@PathVariable String ids,Pageable pageable){
+		Page<ProdutoDTO> dtos = service.byCategoriasIn(ids, pageable);
+		
+		return ResponseEntity.ok(dtos);
+		
+	}
+
+	
 
 }

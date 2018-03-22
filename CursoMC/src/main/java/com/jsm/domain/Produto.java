@@ -20,6 +20,7 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jsm.dto.ProdutoDTO;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Produto implements Serializable {
@@ -59,6 +60,10 @@ public class Produto implements Serializable {
 
 	}
 	
+	
+	public ProdutoDTO toDTO() {
+		return new ProdutoDTO(id, nome, preco);
+	}
 	
 
 	public Produto(Long id, String nome, BigDecimal preco) {

@@ -34,9 +34,9 @@ public class ClienteNewDTO implements Serializable {
 	private Integer tipo;
 	// TELEFONES
 	@NotEmpty
-	private String Telefone1;
-	private String telefone2;
-	private String telefone3;
+	private String telefone01;
+	private String telefone02;
+	private String telefone03;
 	// ENDERECO
 	
 	@NotEmpty
@@ -57,90 +57,119 @@ public class ClienteNewDTO implements Serializable {
 		super();
 		
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public String getCpfCnpj() {
 		return cpfCnpj;
 	}
+
 	public void setCpfCnpj(String cpfCnpj) {
 		this.cpfCnpj = cpfCnpj;
 	}
-	public Integer getTipo() {
-		return tipo;
-	}
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
-	}
-	public String getTelefone1() {
-		return Telefone1;
-	}
-	public void setTelefone1(String telefone1) {
-		Telefone1 = telefone1;
-	}
-	public String getTelefone2() {
-		return telefone2;
-	}
-	public void setTelefone2(String telefone2) {
-		this.telefone2 = telefone2;
-	}
-	public String getTelefone3() {
-		return telefone3;
-	}
-	public void setTelefone3(String telefone3) {
-		this.telefone3 = telefone3;
-	}
-	public String getLogradouro() {
-		return logradouro;
-	}
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}
-	public String getNumero() {
-		return numero;
-	}
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-	public String getComplemento() {
-		return complemento;
-	}
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-	public String getBairro() {
-		return bairro;
-	}
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-	public String getCep() {
-		return cep;
-	}
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-	public Long getCidadeId() {
-		return cidadeId;
-	}
-	public void setCidadeId(Long cidadeId) {
-		this.cidadeId = cidadeId;
-	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Integer getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Integer tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getTelefone01() {
+		return telefone01;
+	}
+
+	public void setTelefone01(String telefone01) {
+		this.telefone01 = telefone01;
+	}
+
+	public String getTelefone02() {
+		return telefone02;
+	}
+
+	public void setTelefone02(String telefone02) {
+		this.telefone02 = telefone02;
+	}
+
+	public String getTelefone03() {
+		return telefone03;
+	}
+
+	public void setTelefone03(String telefone03) {
+		this.telefone03 = telefone03;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public Long getCidadeId() {
+		return cidadeId;
+	}
+
+	public void setCidadeId(Long cidadeId) {
+		this.cidadeId = cidadeId;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -155,11 +184,11 @@ public class ClienteNewDTO implements Serializable {
 		builder.append(", tipo=");
 		builder.append(tipo);
 		builder.append(", Telefone1=");
-		builder.append(Telefone1);
+		builder.append(telefone01);
 		builder.append(", telefone2=");
-		builder.append(telefone2);
+		builder.append(telefone02);
 		builder.append(", telefone3=");
-		builder.append(telefone3);
+		builder.append(telefone03);
 		builder.append(", logradouro=");
 		builder.append(logradouro);
 		builder.append(", numero=");
