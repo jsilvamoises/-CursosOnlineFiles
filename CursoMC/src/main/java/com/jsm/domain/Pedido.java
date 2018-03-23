@@ -47,7 +47,7 @@ public class Pedido implements Serializable {
 	
 	
 	@OneToMany(mappedBy="id.pedido")
-	private Set<ItemPedido> itens  = new HashSet<>();
+	private Set<ItemPedido> items  = new HashSet<>();
 
 	public Pedido() {
 		super();
@@ -105,7 +105,7 @@ public class Pedido implements Serializable {
 	@Transient
 	public BigDecimal getValorTotal() {
 		BigDecimal bd = new BigDecimal(0);
-		for(ItemPedido ip:getItens()) {			
+		for(ItemPedido ip:getItems()) {			
 			bd = 	bd.add(ip.getSubTotal());
 			System.out.println("BD To float: "+bd.floatValue());
 		}
@@ -114,12 +114,12 @@ public class Pedido implements Serializable {
 	}
 	
 
-	public Set<ItemPedido> getItens() {
-		return itens;
+	public Set<ItemPedido> getItems() {
+		return items;
 	}
 
-	public void setItens(Set<ItemPedido> itens) {
-		this.itens = itens;
+	public void setItems(Set<ItemPedido> itens) {
+		this.items = itens;
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class Pedido implements Serializable {
 		
 		builder.append("\n####### ITENS DO PEDIDO #######\n");
 		
-		for(ItemPedido ip:getItens()) {
+		for(ItemPedido ip:getItems()) {
 			builder.append(ip.toString());
 		}
 		builder.append("\nValor Total: ");

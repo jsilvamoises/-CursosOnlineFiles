@@ -34,11 +34,11 @@ public class PedidoResource {
 	
 	
 	@PostMapping
-	public ResponseEntity<Pedido> post(@Valid @RequestBody Pedido dto) {
+	public ResponseEntity<Void> post(@Valid @RequestBody Pedido dto) {
 		service.post(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId())
 				.toUri();
-		return ResponseEntity.created(uri).body(dto);
+		return ResponseEntity.created(uri).build();
 	}
 	
 	

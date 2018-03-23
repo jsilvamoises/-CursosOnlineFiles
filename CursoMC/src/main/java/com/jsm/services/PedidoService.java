@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.mariadb.jdbc.internal.logging.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -104,7 +105,7 @@ public class PedidoService {
 		Pagamento pg = pgtoRep.save(pedido.getPagamento());
 		pedido.setPagamento(pg);
 		
-		for(ItemPedido ip:pedido.getItens()) {
+		for(ItemPedido ip:pedido.getItems()) {
 			Produto p = prodRep.getOne(ip.getId().getProduto().getId());
 			ip.setDesconto(BigDecimal.ZERO);
 			ip.setPreco(p.getPreco());
@@ -112,7 +113,7 @@ public class PedidoService {
 			ip.setProduto(p);
 		}
 		
-		ipRep.saveAll(pedido.getItens());
+		ipRep.saveAll(pedido.getItems());
 		
 		
 		pedido = rep.getOne(pedido.getId());
@@ -122,8 +123,22 @@ public class PedidoService {
 		
 		
 		//emailService.sendOrderConfirmationEmail(pedido.getId());
-		emailService.sendHtmlEmail(pedido);
+		
+		//emailService.sendHtmlEmail(pedido);
+		enviarEmail(pedido);
 		return pedido;
+	}
+	
+	private void enviarEmail(Pedido pedido) {
+		try {
+			new Thread(new Runnable() {
+				public void run() {
+					emailService.sendHtmlEmail(pedido);
+				}
+			}).start();
+		} catch (Exception e) {
+			LoggerFactory.getLogger(PedidoService.class).info(e.getMessage());
+		}
 	}
 
 	public Pedido put(Long id, Pedido entity) {
